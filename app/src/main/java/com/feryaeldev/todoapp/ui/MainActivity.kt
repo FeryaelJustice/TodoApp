@@ -13,6 +13,9 @@ import com.feryaeldev.todoapp.ui.theme.TodoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.activity.viewModels
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.compose.rememberNavController
+import com.feryaeldev.todoapp.ui.navigation.NavigationHost
 import com.google.gson.Gson
 import javax.inject.Inject
 
@@ -21,27 +24,20 @@ class MainActivity : ComponentActivity() {
 
     private val mainViewModel: MainActivityViewModel by viewModels()
 
-    @Inject
-    lateinit var gson: Gson
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController()
+            val scope = rememberCoroutineScope()
             TodoAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    App(mainViewModel = mainViewModel)
+                    NavigationHost(navController = navController, scope = scope, mainViewModel = mainViewModel)
                 }
             }
         }
-    }
-
-    @Composable
-    fun App(mainViewModel: MainActivityViewModel){
-        var msg = mainViewModel.message.observeAsState()
-        Text(text = gson.toJson(msg.value))
     }
 }

@@ -17,10 +17,6 @@ class MainActivityViewModel @Inject constructor(
     private val networkUseCase: NetworkUseCase
 ) : ViewModel() {
 
-    private val _message = MutableLiveData<String>()
-    val message: LiveData<String>
-        get() = _message
-
     private val _countryLiveData = MutableLiveData<List<Country>?>()
     val countryList: LiveData<List<Country>?>
         get() = _countryLiveData
@@ -31,7 +27,6 @@ class MainActivityViewModel @Inject constructor(
 
     private fun loadAll() {
         viewModelScope.launch(Dispatchers.IO) {
-            _message.postValue(networkUseCase.getApiResponse().body()?.message ?: "No message")
             // loadCountries()
         }
     }
