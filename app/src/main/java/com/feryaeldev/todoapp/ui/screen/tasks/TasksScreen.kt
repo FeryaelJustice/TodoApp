@@ -16,11 +16,9 @@ fun TasksScreen(
     coroutineScope: CoroutineScope,
     mainActivityViewModel: MainActivityViewModel
 ) {
-    var loading = viewModel.loading.observeAsState()
-    var msg = viewModel.message.observeAsState()
-    if (loading.value == true) {
+    if (viewModel.loading.observeAsState().value == true) {
         CircularProgressIndicator()
     } else {
-        Text(text = viewModel.gson.toJson(msg.value))
+        Text(text = viewModel.gson.toJson(viewModel.message.observeAsState().value))
     }
 }
