@@ -72,4 +72,8 @@ class TasksScreenViewModel @Inject constructor(
             }
         })
     }
+
+    fun onTaskItemRemove(task: Task) {
+        _tasks.postValue(_tasks.value?.minus(task))
+    }
 }

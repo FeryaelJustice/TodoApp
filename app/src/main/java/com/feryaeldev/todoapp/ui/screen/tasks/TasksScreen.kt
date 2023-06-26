@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,6 +38,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,7 +67,7 @@ fun TasksScreen(
 
     LaunchedEffect(key1 = loading, block = {
         // Text(text = viewModel.gson.toJson(viewModel.message.observeAsState().value))
-        scope.launch(Dispatchers.Main){
+        scope.launch(Dispatchers.Main) {
             viewModel.message.value?.let { snackbarHostState.showSnackbar(it) }
         }
     })
@@ -145,17 +147,25 @@ fun TasksList(viewModel: TasksScreenViewModel) {
     val myTasks: List<Task> = viewModel.tasks.observeAsState().value ?: emptyList()
     LazyColumn {
         items(myTasks) { task ->
-            TaskItem(task = task, onTaskCheckedChange = { viewModel.onTaskCheckedChange(it) })
+            TaskItem(
+                task = task,
+                onTaskCheckedChange = { viewModel.onTaskCheckedChange(it) },
+                onTaskItemRemove = { viewModel.onTaskItemRemove(it) })
         }
     }
 }
 
 @Composable
-fun TaskItem(task: Task, onTaskCheckedChange: (Task) -> Unit) {
+fun TaskItem(task: Task, onTaskCheckedChange: (Task) -> Unit, onTaskItemRemove: (Task) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(onLongPress = {
+                    onTaskItemRemove(task)
+                })
+            },
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
