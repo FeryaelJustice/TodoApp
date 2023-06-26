@@ -12,8 +12,15 @@ import androidx.compose.ui.Modifier
 import com.feryaeldev.todoapp.ui.theme.TodoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.activity.viewModels
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.core.os.bundleOf
 import androidx.navigation.compose.rememberNavController
 import com.feryaeldev.todoapp.ui.navigation.NavigationHost
 import com.google.gson.Gson
@@ -29,13 +36,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val scope = rememberCoroutineScope()
+            val snackbarHostState by mutableStateOf(SnackbarHostState())
             TodoAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavigationHost(navController = navController, scope = scope, mainViewModel = mainViewModel)
+                    NavigationHost(
+                        navController = navController,
+                        scope = scope,
+                        snackbarHostState = snackbarHostState,
+                        mainViewModel = mainViewModel
+                    )
                 }
             }
         }

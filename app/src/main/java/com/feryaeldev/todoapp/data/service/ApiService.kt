@@ -7,7 +7,4 @@ import retrofit2.http.GET
 interface ApiService {
     @GET("/name")
     suspend fun getApiResponse(): Response<ApiResponse>
-
-    @GET("region/europe")
-    suspend fun getCountries(): Response<ApiResponse>
 }

@@ -8,6 +8,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -50,11 +52,12 @@ sealed class Screen(val route: String) {
 fun NavigationHost(
     navController: NavHostController,
     scope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
     mainViewModel: MainActivityViewModel
 ) {
     val context = LocalContext.current
     val currentDestination = currentDestination(navController)
-    Scaffold(topBar = {
+    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, topBar = {
         TodoAppTopBar(
             navController = navController,
             currentDestination = currentDestination,
@@ -66,7 +69,13 @@ fun NavigationHost(
             startDestination = todoapp,
             modifier = Modifier.padding(innerPadding)
         ) {
-            graph(navController = navController, scope = scope, mainViewModel = mainViewModel)
+            graph(
+                navController = navController,
+                scope = scope,
+                snackbarHostState = snackbarHostState,
+                mainViewModel = mainViewModel,
+                context = context
+            )
         }
     }
 }
@@ -74,14 +83,18 @@ fun NavigationHost(
 fun NavGraphBuilder.graph(
     navController: NavHostController,
     scope: CoroutineScope,
-    mainViewModel: MainActivityViewModel
+    snackbarHostState: SnackbarHostState,
+    mainViewModel: MainActivityViewModel,
+    context: Context
 ) {
     navigation(startDestination = Screen.TasksScreen.route, route = todoapp) {
         composable(route = Screen.TasksScreen.route) {
             TasksScreen(
                 navController = navController,
-                coroutineScope = scope,
-                mainActivityViewModel = mainViewModel
+                scope = scope,
+                snackbarHostState = snackbarHostState,
+                mainActivityViewModel = mainViewModel,
+                context = context
             )
         }
     }

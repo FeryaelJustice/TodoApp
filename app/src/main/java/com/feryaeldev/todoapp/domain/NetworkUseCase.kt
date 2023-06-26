@@ -5,5 +5,4 @@ import javax.inject.Inject
 
 class NetworkUseCase @Inject constructor(private val networkService: NetworkService) {
     suspend fun getApiResponse() = networkService.getApiResponse()
-    suspend fun getCountries() = networkService.getCountries()
 }
