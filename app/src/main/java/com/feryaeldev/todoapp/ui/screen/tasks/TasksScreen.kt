@@ -34,11 +34,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,6 +49,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.feryaeldev.todoapp.ui.MainActivityViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.feryaeldev.todoapp.data.model.Task
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -62,36 +66,54 @@ fun TasksScreen(
     context: Context
 ) {
 
-    val loading: Boolean by viewModel.loading.observeAsState(false)
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val uiState by produceState<TasksUIState>(
+        initialValue = TasksUIState.Loading,
+        key1 = lifecycle,
+        key2 = viewModel
+    ) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            viewModel.uiState.collect { value = it }
+        }
+    }
     val showDialog: Boolean by viewModel.showDialog.observeAsState(false)
 
-    LaunchedEffect(key1 = loading, block = {
-        // Text(text = viewModel.gson.toJson(viewModel.message.observeAsState().value))
-        scope.launch(Dispatchers.Main) {
-            viewModel.message.value?.let { snackbarHostState.showSnackbar(it) }
+    LaunchedEffect(key1 = uiState, block = {
+        if (uiState is TasksUIState.Success) {
+            // Text(text = viewModel.gson.toJson(viewModel.message.observeAsState().value))
+            scope.launch(Dispatchers.Main) {
+                viewModel.message.value?.let { snackbarHostState.showSnackbar(it) }
+            }
         }
     })
 
-    if (loading) {
-        CircularProgressIndicator()
-    } else {
-        Box(modifier = Modifier.fillMaxSize()) {
-            AddTasksDialog(
-                show = showDialog,
-                onDismiss = { viewModel.onCloseDialog() },
-                onTaskAdd = {
-                    viewModel.onTaskCreated(it)
-                    viewModel.onCloseDialog()
-                    Toast.makeText(context, "Task added", Toast.LENGTH_SHORT).show()
+    when (uiState) {
+        is TasksUIState.Error -> {
+            Text(text = "Error")
+        }
+
+        is TasksUIState.Loading -> {
+            CircularProgressIndicator()
+        }
+
+        is TasksUIState.Success -> {
+            Box(modifier = Modifier.fillMaxSize()) {
+                AddTasksDialog(
+                    show = showDialog,
+                    onDismiss = { viewModel.onCloseDialog() },
+                    onTaskAdd = {
+                        viewModel.onTaskCreated(it)
+                        Toast.makeText(context, "Task added", Toast.LENGTH_SHORT).show()
+                    }
+                )
+                TasksList(viewModel = viewModel)
+                FabDialog(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                ) {
+                    viewModel.onShowDialog()
                 }
-            )
-            TasksList(viewModel = viewModel)
-            FabDialog(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
-            ) {
-                viewModel.onShowDialog()
             }
         }
     }

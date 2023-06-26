@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TaskDao {
     @Query("SELECT * FROM Tasks")
-    fun getTasks(): Flow<TaskEntity>
+    fun getTasks(): Flow<List<TaskEntity>>
 
     @Insert
     suspend fun addTask(task: TaskEntity)
