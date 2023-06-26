@@ -1,9 +1,11 @@
 package com.feryaeldev.todoapp.ui.screen.tasks
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +26,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -170,7 +173,7 @@ fun TasksList(viewModel: TasksScreenViewModel) {
             TaskItem(
                 task = task,
                 onTaskCheckedChange = { viewModel.onTaskCheckedChange(it) },
-                onTaskItemRemove = { viewModel.onTaskItemRemove(it) })
+                onTaskItemRemove = { viewModel.onTaskItemRemove(it); Log.d("long press", "siuuu") })
         }
     }
 }
@@ -186,13 +189,18 @@ fun TaskItem(task: Task, onTaskCheckedChange: (Task) -> Unit, onTaskItemRemove: 
                     onTaskItemRemove(task)
                 })
             },
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surfaceVariant,
+        )
     ) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = task.name, color = Color.White, modifier = Modifier
+                text = task.name,
+                color = if(isSystemInDarkTheme()) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = 4.dp)
+                    .padding(horizontal = 4.dp),
             )
             Checkbox(checked = task.selected, onCheckedChange = { onTaskCheckedChange(task) })
         }

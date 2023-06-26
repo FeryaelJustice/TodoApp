@@ -4,10 +4,13 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBar
@@ -17,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -57,13 +61,17 @@ fun NavigationHost(
 ) {
     val context = LocalContext.current
     val currentDestination = currentDestination(navController)
-    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, topBar = {
-        TodoAppTopBar(
-            navController = navController,
-            currentDestination = currentDestination,
-            context = context
-        )
-    }) { innerPadding ->
+    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        topBar = {
+            TodoAppTopBar(
+                navController = navController,
+                currentDestination = currentDestination,
+                context = context
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.primary
+    ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = todoapp,
@@ -114,7 +122,8 @@ fun TodoAppTopBar(
                 contentDescription = "Logo",
                 modifier = Modifier.clickable {
                     // navController.navigate(tasksScreenRoute)
-                    Toast.makeText(context, "Logo clicked", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "WHAT IS LOVE BEIBI DON JER MI", Toast.LENGTH_SHORT)
+                        .show()
                 }
             )
         },
@@ -125,11 +134,13 @@ fun TodoAppTopBar(
                     contentDescription = "Back",
                     modifier = Modifier.clickable {
                         navController.navigateUp()
+                        Toast.makeText(context, "Back press clicked", Toast.LENGTH_SHORT).show()
                     }
                 )
             }
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.White)
+        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.secondary),
+        modifier = Modifier.border(1.dp, Color.Black, ShapeDefaults.ExtraSmall)
     )
 }
 
