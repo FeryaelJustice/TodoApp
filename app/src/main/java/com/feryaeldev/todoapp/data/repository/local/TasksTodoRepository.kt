@@ -1,4 +1,4 @@
-package com.feryaeldev.todoapp.domain.repository.local
+package com.feryaeldev.todoapp.data.repository.local
 
 import com.feryaeldev.todoapp.data.db.TaskDao
 import com.feryaeldev.todoapp.data.mapper.toTask

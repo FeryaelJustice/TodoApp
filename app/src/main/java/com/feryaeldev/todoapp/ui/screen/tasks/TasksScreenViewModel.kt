@@ -25,7 +25,7 @@ class TasksScreenViewModel @Inject constructor(
     private val getApiResponseUseCase: GetApiResponseUseCase,
     private val addTaskUseCase: AddTaskUseCase,
     private val getTasksUseCase: GetTasksUseCase,
-    val gson: Gson
+    private val gson: Gson
 ) : ViewModel() {
 
     /*

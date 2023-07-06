@@ -1,4 +1,4 @@
-package com.feryaeldev.todoapp.domain.repository.network
+package com.feryaeldev.todoapp.data.repository.network
 
 import com.feryaeldev.todoapp.data.model.ApiResponse
 import com.feryaeldev.todoapp.data.service.NetworkService
