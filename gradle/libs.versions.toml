@@ -1,16 +1,56 @@
 [versions]
 androidGradlePlugin = "8.0.2"
-kotlin = "1.7.20"
-ktx = "1.10.1"
-detekt = "1.23.0"
+kotlinPlugin = "1.7.20"
+detektPlugin = "1.23.0"
 googleDaggerHiltAndroidPlugin = "2.44"
+ktx = "1.10.1"
+activityCompose = "1.7.2"
+composeBom = "2023.06.01"
+materialTwo = "1.9.0"
+junit = "4.13.2"
+testExtJunit = "1.1.5"
+testEspressoCore = "3.5.1"
+leakcanary = "2.12"
+lifecycle = "2.6.1"
+googleDaggerHilt = "2.47"
+hiltNavigationCompose = "1.1.0-alpha01"
+kotlinCoroutines = "1.7.2"
+squareupRetrofit = "2.9.0"
+okhttp3LoggingInterceptor = "5.0.0-alpha.11"
+googleGson = "2.10.1"
+navigationCompose = "2.6.0"
+room = "2.5.2"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+google-material-two = { group = "com.google.android.material", name = "material", version.ref = "materialTwo" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "testExtJunit" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "testEspressoCore" }
+squareup-leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+google-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "googleDaggerHilt" }
+google-dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "googleDaggerHilt" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
+squareup-retrofit2-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "squareupRetrofit" }
+squareup-retrofit2-convertergson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "squareupRetrofit" }
+squareup-okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3LoggingInterceptor" }
+google-code-gson = { group = "com.google.code.gson", name = "gson", version.ref = "googleGson" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose"}
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinPlugin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
 dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "googleDaggerHiltAndroidPlugin" }
