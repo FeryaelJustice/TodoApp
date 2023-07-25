@@ -1,6 +1,7 @@
 [versions]
 androidGradlePlugin = "8.1.0"
-kotlinPlugin = "1.7.20"
+kotlinPlugin = "1.8.10"
+kspPlugin = "1.8.10-1.0.9"
 detektPlugin = "1.23.0"
 googleDaggerHiltAndroidPlugin = "2.44"
 ktx = "1.10.1"
@@ -52,5 +53,6 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinPlugin" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "kspPlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
 dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "googleDaggerHiltAndroidPlugin" }

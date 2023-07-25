@@ -6,7 +6,7 @@ import androidx.room.InvalidationTracker
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 
-@Database(entities = [TaskEntity::class], version = 1)
+@Database(entities = [TaskEntity::class], version = 1, exportSchema = false)
 abstract class TodoDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
 
