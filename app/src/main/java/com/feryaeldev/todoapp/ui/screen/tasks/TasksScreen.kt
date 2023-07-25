@@ -79,14 +79,15 @@ fun TasksScreen(
     }
     val showDialog: Boolean by viewModel.showDialog.observeAsState(false)
 
+    /*
     LaunchedEffect(key1 = uiState, block = {
         if (uiState is TasksUIState.Success) {
-            // Text(text = viewModel.gson.toJson(viewModel.message.observeAsState().value))
             scope.launch(Dispatchers.Main) {
                 viewModel.message.value?.let { snackbarHostState.showSnackbar(it) }
             }
         }
     })
+    */
 
     when (uiState) {
         is TasksUIState.Error -> {
@@ -107,7 +108,7 @@ fun TasksScreen(
                         Toast.makeText(context, "Task added", Toast.LENGTH_SHORT).show()
                     }
                 )
-                TasksList(viewModel = viewModel)
+                TasksList(myTasks = (uiState as TasksUIState.Success).data, viewModel = viewModel)
                 FabDialog(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
@@ -166,10 +167,10 @@ fun AddTasksDialog(show: Boolean, onDismiss: () -> Unit, onTaskAdd: (Task) -> Un
 }
 
 @Composable
-fun TasksList(viewModel: TasksScreenViewModel) {
-    val myTasks: List<Task> = viewModel.tasks.observeAsState().value ?: emptyList()
+fun TasksList(myTasks: List<Task>, viewModel: TasksScreenViewModel) {
+    // val myTasks: List<Task> = viewModel.tasks.observeAsState().value ?: emptyList()
     LazyColumn {
-        items(myTasks) { task ->
+        items(myTasks, key = { it.id }) { task ->
             TaskItem(
                 task = task,
                 onTaskCheckedChange = { viewModel.onTaskCheckedChange(it) },
@@ -197,7 +198,7 @@ fun TaskItem(task: Task, onTaskCheckedChange: (Task) -> Unit, onTaskItemRemove: 
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = task.name,
-                color = if(isSystemInDarkTheme()) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                color = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 4.dp),

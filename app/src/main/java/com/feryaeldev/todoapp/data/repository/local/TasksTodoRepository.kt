@@ -15,4 +15,6 @@ class TasksTodoRepository @Inject constructor(private val tasksDao: TaskDao) {
     val tasks: Flow<List<Task>> = tasksDao.getTasks().map { tasks -> tasks.map { it.toTask() } }
 
     suspend fun addTask(task: Task) = tasksDao.addTask(task.toTaskEntity())
+    suspend fun updateTask(task: Task) = tasksDao.updateTask(task.toTaskEntity())
+    suspend fun deleteTask(task: Task) = tasksDao.deleteTask(task.toTaskEntity())
 }
