@@ -3,18 +3,21 @@ package com.feryaeldev.todoapp.ui.navigation
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,29 +32,25 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.feryaeldev.todoapp.R
 import com.feryaeldev.todoapp.ui.MainActivityViewModel
+import com.feryaeldev.todoapp.ui.screen.settings.SettingsScreen
 import com.feryaeldev.todoapp.ui.screen.tasks.TasksScreen
 import kotlinx.coroutines.CoroutineScope
 
 // Navigation Graph sections
-const val todoapp = "todoapp" // login, register...
-const val app = "app" // inside the account: tasks, settings...
+const val todoapp = "todoapp" // inside the account: tasks, settings...
+// const val app = "app" // login, register...
 
 // Screen Names
-const val loginScreenRoute = "loginScreen"
-const val registerScreenRoute = "registerScreen"
-const val recoverAccountScreenRoute = "recoverAccountScreen"
+const val settingsScreenRoute = "settingsScreen"
 const val tasksScreenRoute = "tasksScreen"
 
 // Screen class
 sealed class Screen(val route: String) {
-    object LoginScreen : Screen(loginScreenRoute)
-    object RegisterScreen : Screen(registerScreenRoute)
-    object RecoverAccountScreen : Screen(recoverAccountScreenRoute)
+    object SettingsScreen : Screen(settingsScreenRoute)
     object TasksScreen : Screen(tasksScreenRoute)
 }
 
 // Main Navigation
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationHost(
     navController: NavHostController,
@@ -60,12 +59,11 @@ fun NavigationHost(
     mainViewModel: MainActivityViewModel
 ) {
     val context = LocalContext.current
-    val currentDestination = currentDestination(navController)
-    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TodoAppTopBar(
                 navController = navController,
-                currentDestination = currentDestination,
                 context = context
             )
         },
@@ -105,6 +103,15 @@ fun NavGraphBuilder.graph(
                 context = context
             )
         }
+        composable(route = Screen.SettingsScreen.route) {
+            SettingsScreen(
+                navController = navController,
+                scope = scope,
+                snackbarHostState = snackbarHostState,
+                mainActivityViewModel = mainViewModel,
+                context = context
+            )
+        }
     }
 }
 
@@ -112,9 +119,9 @@ fun NavGraphBuilder.graph(
 @Composable
 fun TodoAppTopBar(
     navController: NavHostController,
-    currentDestination: NavDestination?,
     context: Context
 ) {
+    var currentDes = currentDestination(navController)
     TopAppBar(
         title = {
             Image(
@@ -128,23 +135,34 @@ fun TodoAppTopBar(
             )
         },
         navigationIcon = {
-            if (currentDestination?.route != tasksScreenRoute) {
-                Image(
-                    painter = painterResource(id = R.drawable.baseline_arrow_back_24),
-                    contentDescription = "Back",
-                    modifier = Modifier.clickable {
-                        navController.navigateUp()
-                        Toast.makeText(context, "Back press clicked", Toast.LENGTH_SHORT).show()
-                    }
-                )
+            Image(
+                painter = painterResource(id = R.drawable.baseline_arrow_back_24),
+                contentDescription = "Back",
+                modifier = Modifier.clickable {
+                    navController.navigateUp()
+                    currentDes = navController.currentBackStackEntry?.destination?.route
+                    Toast.makeText(
+                        context,
+                        "Back press clicked: $currentDes",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
+        },
+        actions = {
+            IconButton(onClick = {
+                navController.navigate(settingsScreenRoute)
+                currentDes = navController.currentBackStackEntry?.destination?.route
+            }) {
+                Icon(imageVector = Icons.Filled.Settings, contentDescription = "Settings")
             }
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.secondary),
+        colors = topAppBarColors(containerColor = MaterialTheme.colorScheme.secondary),
         modifier = Modifier.border(1.dp, Color.Black, ShapeDefaults.ExtraSmall)
     )
 }
 
 @Composable
-fun currentDestination(navController: NavHostController): NavDestination? {
-    return navController.currentBackStackEntry?.destination
+fun currentDestination(navController: NavHostController): String? {
+    return navController.currentBackStackEntry?.destination?.route
 }
