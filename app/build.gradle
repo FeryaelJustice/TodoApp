@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.detekt)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.google.ksp)
     id("org.jetbrains.kotlin.kapt")
     alias(libs.plugins.dagger.hilt.android)
 }
