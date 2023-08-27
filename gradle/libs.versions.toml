@@ -7,25 +7,37 @@ googleDaggerHiltAndroidPlugin = "2.44"
 ktx = "1.10.1"
 activityCompose = "1.7.2"
 composeBom = "2023.08.00"
+material3 = "1.1.1"
 materialTwo = "1.9.0"
 junit = "4.13.2"
+runtimeLivedata = "1.5.0"
 testExtJunit = "1.1.5"
 testEspressoCore = "3.5.1"
 leakcanary = "2.12"
 lifecycle = "2.6.1"
 googleDaggerHilt = "2.47"
 hiltNavigationCompose = "1.1.0-alpha01"
-kotlinCoroutines = "1.7.2"
+kotlinCoroutines = "1.7.3"
 squareupRetrofit = "2.9.0"
 okhttp3LoggingInterceptor = "5.0.0-alpha.11"
 googleGson = "2.10.1"
-navigationCompose = "2.6.0"
+navigationCompose = "2.7.1"
 room = "2.5.2"
+ui= "1.5.0"
+uiToolingPreview = "1.5.0"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedata" }
+androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
+androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics", version.ref = "ui" }
+androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "ui" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "ui" }
+androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "ui" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 google-material-two = { group = "com.google.android.material", name = "material", version.ref = "materialTwo" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "testExtJunit" }
