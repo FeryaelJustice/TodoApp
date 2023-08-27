@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.1.0"
+androidGradlePlugin = "8.1.1"
 kotlinPlugin = "1.8.10"
 kspPlugin = "1.8.10-1.0.9"
 detektPlugin = "1.23.0"
